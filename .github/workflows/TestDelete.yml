@@ -24,7 +24,7 @@ jobs:
         tenant-id: ${{ vars.PIPELINES_TENANT_ID }}
         solution-name: BeerSolutionGitHub
         solution-output-file: 'BeerSolutionGitHub.zip'
-        working-directory: 'solution'
+        #working-directory: 'solution'
         managed: false
 
 #    - name: Unpack Solution
