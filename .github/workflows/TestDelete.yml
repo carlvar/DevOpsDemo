@@ -21,7 +21,7 @@ jobs:
         client-secret: ${{ secrets.PIPELINES_SECRET }}
         tenant-id: ${{ vars.PIPELINES_TENANT_ID }}
         solution-name: BeerSolutionGitHub
-        solution-output-file: './solution/BeerSolutionGitHub.zip'
+        solution-output-file: './solution/BeerSolutionGitHub_U.zip'
         managed: false
       
 
