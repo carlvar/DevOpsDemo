@@ -13,6 +13,7 @@ jobs:
 #        password-secret: ''
         app-id: ${{ vars.PIPELINES_APP_ID }}
         client-secret: ${{ secrets.PIPELINES_SECRET }}
+        tenant-id: ${{ vars.PIPELINES_TENANT_ID }}
         solution-name: BeerSolutionGitHub
         solution-output-file: 'BeerSolutionGitHub.zip'
         working-directory: 'solution'
