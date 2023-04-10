@@ -8,31 +8,35 @@ jobs:
     - name: Export Solution
       uses: microsoft/powerplatform-actions/export-solution@v0
       with:
-        environment-url: 'https://myenv.crm.dynamics.com'
-        user-name: 'me@myenv.onmicrosoft.com'
-        password-secret: ${{ secrets.MYPASSWORD }}
-        solution-name: aSolution
-        solution-output-file: 'aSolution.zip'
-        working-directory: 'out'
+        environment-url: ${{ vars.PIPELINES_ENV_DEV_URL }}
+#        user-name: ''
+#        password-secret: ''
+        app-id: ${{ vars.PIPELINES_APP_ID }}
+        client-secret: ${{ secrets.PIPELINES_SECRET }}
+        solution-name: BeerSolutionGitHub
+        solution-output-file: 'BeerSolutionGitHub.zip'
+        working-directory: 'solution'
+        managed: false
 
-    - name: Unpack Solution
-      uses: microsoft/powerplatform-actions/unpack-solution@v0
-      with:
-        solution-file: 'out/aSolution1.zip'
-        solution-folder: 'out/solutions/solution one'
-        solution-type: 'Unmanaged'
-        overwrite-files: true
-
-    - name: Publish Solution
-      uses: microsoft/powerplatform-actions/publish-solution@v0
-      with:
-        environment-url: 'https://myenv.crm.dynamics.com'
-        user-name: 'me@myenv.onmicrosoft.com'
-        password-secret: ${{ secrets.MYPASSWORD }}
-
-    - name: Prepare solution changes for check-in into source control
-      uses: microsoft/powerplatform-actions/branch-solution@v0
-      with:
-        solution-folder: 'out/solutions/solution one'
-        solution-target-folder: 'src/solutions/solution1'
-        token: ${{ secrets.GITHUB_TOKEN }}
+#    - name: Unpack Solution
+#      uses: microsoft/powerplatform-actions/unpack-solution@v0
+#      with:
+#        solution-file: 'out/aSolution1.zip'
+#        solution-folder: 'out/solutions/solution one'
+#        solution-type: 'Unmanaged'
+#        overwrite-files: true
+#
+#    - name: Publish Solution
+#      uses: microsoft/powerplatform-actions/publish-solution@v0
+#      with:
+#        environment-url: 'https://myenv.crm.dynamics.com'
+#        user-name: 'me@myenv.onmicrosoft.com'
+#        password-secret: ${{ secrets.MYPASSWORD }}
+#
+#    - name: Prepare solution changes for check-in into source control
+#      uses: microsoft/powerplatform-actions/branch-solution@v0
+#      with:
+#        solution-folder: 'out/solutions/solution one'
+#        solution-target-folder: 'src/solutions/solution1'
+#        token: ${{ secrets.GITHUB_TOKEN }}
+#
