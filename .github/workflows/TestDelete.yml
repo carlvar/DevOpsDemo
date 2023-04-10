@@ -28,10 +28,27 @@ jobs:
     - name: Unpack Solution
       uses: microsoft/powerplatform-actions/unpack-solution@v0
       with:
-        solution-file: './solution/BeerSolutionGitHub.zip'
+        solution-file: './solution/BeerSolutionGitHub_U.zip'
         solution-folder: './src'
         solution-type: 'Unmanaged'
         overwrite-files: true
+        
+    - name: Pack Solution
+      uses: microsoft/powerplatform-actions/pack-solution@v0
+      with:
+        solution-file: './solution/packed/BeerSolutionGitHub_M.zip'
+        solution-folder: './src'
+        solution-type: 'Managed'
+               
+    - name: Import Solution
+      uses: microsoft/powerplatform-actions/import-solution@v0
+      with:
+        environment-url: ${{ vars.PIPELINES_ENV_TEST_URL }}
+        app-id: ${{ vars.PIPELINES_APP_ID }}
+        client-secret: ${{ secrets.PIPELINES_SECRET }}
+        tenant-id: ${{ vars.PIPELINES_TENANT_ID }}
+        solution-file: './solution/packed/BeerSolutionGitHub_M.zip'
+        
 
 #    - name: Publish Solution
 #      uses: microsoft/powerplatform-actions/publish-solution@v0
