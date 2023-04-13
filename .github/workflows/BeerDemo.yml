@@ -1,0 +1,71 @@
+name: Test GitHub Actions for deleting
+run-name: ${{ github.actor }} is testing out GitHub Actions 🚀
+on: [workflow_dispatch]
+jobs:
+  BeerDemo-DeployToTest:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Who Am I
+      uses: microsoft/powerplatform-actions/who-am-i@v0
+      with:
+        environment-url: ${{ vars.PIPELINES_ENV_DEV_URL }}
+        app-id: ${{ vars.PIPELINES_APP_ID }}
+        client-secret: ${{ secrets.PIPELINES_SECRET }}
+        tenant-id:  ${{ vars.PIPELINES_TENANT_ID }}
+      
+    - name: Export Solution
+      uses: microsoft/powerplatform-actions/export-solution@v0
+      with:
+        environment-url: ${{ vars.PIPELINES_ENV_DEV_URL }}
+        app-id: ${{ vars.PIPELINES_APP_ID }}
+        client-secret: ${{ secrets.PIPELINES_SECRET }}
+        tenant-id: ${{ vars.PIPELINES_TENANT_ID }}
+        solution-name: BeerSolutionGitHub
+        solution-output-file: './solution/BeerSolutionGitHub_M.zip'
+        managed: true
+      
+
+    - name: Unpack Solution
+      uses: microsoft/powerplatform-actions/unpack-solution@v0
+      with:
+        solution-file: './solution/BeerSolutionGitHub_M.zip'
+        solution-folder: './src'
+        solution-type: 'Managed'
+        overwrite-files: true
+        
+# En Este punto se podría recompilar los ensamblados de la solución, minimizar / ofuscar recursos web, etc.
+# Una vez actualizados los componentes, volveríamos a empaquetar
+
+    - name: Pack Solution
+      uses: microsoft/powerplatform-actions/pack-solution@v0
+      with:
+        solution-file: './solution/packed/BeerSolutionGitHub_M.zip'
+        solution-folder: './src'
+        solution-type: 'Managed'
+               
+    - name: Import Solution
+      uses: microsoft/powerplatform-actions/import-solution@v0
+      with:
+        environment-url: ${{ vars.PIPELINES_ENV_TEST_URL }}
+        app-id: ${{ vars.PIPELINES_APP_ID }}
+        client-secret: ${{ secrets.PIPELINES_SECRET }}
+        tenant-id: ${{ vars.PIPELINES_TENANT_ID }}
+        solution-file: './solution/packed/BeerSolutionGitHub_M.zip'
+        
+
+    - name: Publish Solution
+      uses: microsoft/powerplatform-actions/publish-solution@v0
+      with:
+        environment-url: ${{ vars.PIPELINES_ENV_TEST_URL }}
+        app-id: ${{ vars.PIPELINES_APP_ID }}
+        client-secret: ${{ secrets.PIPELINES_SECRET }}
+        tenant-id: ${{ vars.PIPELINES_TENANT_ID }}
+        
+#
+#    - name: Prepare solution changes for check-in into source control
+#      uses: microsoft/powerplatform-actions/branch-solution@v0
+#      with:
+#        solution-folder: 'out/solutions/solution one'
+#        solution-target-folder: 'src/solutions/solution1'
+#        token: ${{ secrets.GITHUB_TOKEN }}
+#
